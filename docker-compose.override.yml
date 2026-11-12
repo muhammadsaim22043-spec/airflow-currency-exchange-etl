@@ -1,0 +1,32 @@
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - airflow
+
+  mongo-express:
+    image: mongo-express:1.0.2-20
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    ports:
+      - "127.0.0.1:8081:8081"
+    networks:
+      - airflow
+
+volumes:
+  mongo_data:
+
+networks:
+  airflow:
+    external: true
+    name: task-3_5bf20d_airflow
